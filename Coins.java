@@ -20,19 +20,14 @@ public class Coins extends Actor
     private int value=0;
     private int stringLength;
     
+    SimpleTimer timerWait = new SimpleTimer();
     public Coins(){
         this.value = 10;
         stringLength = (7 + 2) * 16;
-        
-        
-        setImage(new GreenfootImage(stringLength, 24));
-        GreenfootImage image = getImage();
-        Font font = image.getFont();
-        image.setFont(font.deriveFont(24.0F));  // use larger font
-        image.setColor(Color.BLACK);
+
         
         updateImage();
-        
+
     }
     
     
@@ -51,12 +46,39 @@ public class Coins extends Actor
      private void updateImage(){
         GreenfootImage image = getImage();
         image.clear();
-        image.drawString("COINS: "+ value, 0, 18);
+        GreenfootImage myImage = new GreenfootImage("coin.png");
+        setImage(myImage);
+        myImage.scale(70,70);
+        myImage.setColor(Color.WHITE);
+        myImage.setFont(image.getFont().deriveFont(18f));
+        myImage.drawString("X"+ value, 40, 67);
     }
-    
+    long lastAdded = System.currentTimeMillis();
+
     public void act()
     {
         // Add your action code here.
+        
         updateImage();
+        
+        if(timerWait.millisElapsed()>3000){
+            updateValue();
+            timerWait.mark();
+        }
+        
+        
+    }
+    
+    
+    
+    public boolean  updateValue(){
+        
+        if(value<10){
+            value=value+1;
+            return true;
+        }else{
+            return false;
+        }
+            
     }
 }
